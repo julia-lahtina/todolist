@@ -9,6 +9,8 @@ export type TaskType = {
     isDone: boolean
 }
 
+export type FilterValueType = "all" | "active" | "completed"
+
 function App() {
     //BLL
     const todoListTitle = "What to learn"
@@ -19,14 +21,30 @@ function App() {
         {id: 3, title: "React", isDone: false},
     ])
 
+    const [filter, setFilter] = useState<FilterValueType>("all")
+
 
     function removeTask(taskId: number) {
         setTasks(tasks.filter(task => task.id !== taskId))
     }
 
+    function changeFilter(filter: FilterValueType) {
+        setFilter(filter)
+    }
+
+    //UI
+
+    let tasksForTodoList = tasks;
+    if (filter === "active") {
+        tasksForTodoList = tasks.filter(task => !task.isDone)
+    }
+    if (filter === "completed") {
+        tasksForTodoList = tasks.filter(task => task.isDone)
+    }
     return (
         <div className="App">
-            <TodoList tasks={tasks} todoListTitle={todoListTitle} removeTask={removeTask}/>
+            <TodoList changeFilter={changeFilter} tasks={tasksForTodoList} todoListTitle={todoListTitle}
+                      removeTask={removeTask}/>
         </div>
     );
 }
