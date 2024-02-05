@@ -7,13 +7,14 @@ import {TaskType} from "../App";
 type TodoListPropsType = {
     todoListTitle: string
     tasks: Array<TaskType>
+    removeTask: (taskId: number) => void
 }
-export const TodoList = ({todoListTitle, tasks}: TodoListPropsType) => {
+export const TodoList = ({removeTask, todoListTitle, tasks}: TodoListPropsType) => {
     return (
         <div>
             <TodolistHeader title={todoListTitle}/>
             <AddTaskForm />
-            <TasksList tasks={tasks}/>
+            <TasksList removeTask={removeTask} tasks={tasks}/>
         </div>
     );
 };

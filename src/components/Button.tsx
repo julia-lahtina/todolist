@@ -6,5 +6,5 @@ type ButtonPropsType = {
 }
 export const Button = ({title, onClickHandler}: ButtonPropsType) => {
 
-    return <button>{title}</button>;
+    return <button onClick={onClickHandler}>{title}</button>;
 };

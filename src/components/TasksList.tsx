@@ -5,14 +5,15 @@ import {Button} from "./Button";
 
 type TasksListPropsType = {
     tasks: Array<TaskType>
+    removeTask: (taskId: number) => void
 }
-export const TasksList = ({tasks}: TasksListPropsType) => {
+export const TasksList = ({removeTask, tasks}: TasksListPropsType) => {
 
     const tasksList = <ul>
         {
             tasks.map(task => {
                 return (
-                        <Task key={task.id} title={task.title} isDone={task.isDone}/>
+                        <Task removeTask={removeTask} taskId={task.id} key={task.id} title={task.title} isDone={task.isDone}/>
                 )
             })
         }
