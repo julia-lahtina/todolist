@@ -1,5 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {ChangeEvent, useRef, useState} from 'react';
 import {FilterValuesType} from './App';
+import {setEngine} from "node:crypto";
 
 export type TaskType = {
     id: string
@@ -20,10 +21,15 @@ export function Todolist(props: PropsType) {
     console.log("Todolist has been rendered")
 
     const [taskTitle, setTaskTitle] = useState("")
+    const [taskInputError, setTaskInputError] = useState(false)
 
     function addTask() {
         props.addTask(taskTitle)
         setTaskTitle("")
+    }
+    function onChangeSetTitle(e: ChangeEvent<HTMLInputElement>) {
+        setTaskTitle(e.currentTarget.value)
+        e.currentTarget.value.length > 15 && setTaskInputError(true)
     }
 
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
@@ -32,11 +38,12 @@ export function Todolist(props: PropsType) {
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input value={taskTitle} onChange={(e) => setTaskTitle(e.currentTarget.value)}/>
+            <input value={taskTitle} onChange={onChangeSetTitle}/>
             <button disabled={isAddTaskBtnDisabled} onClick={() => {
                 addTask()
             }}>+
             </button>
+            {taskInputError && <div style={{color: "red"}}>Enter correct title</div>}
         </div>
         <ul>
             {
