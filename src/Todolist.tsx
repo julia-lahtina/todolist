@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {FilterValuesType} from './App';
 
 export type TaskType = {
@@ -17,14 +17,20 @@ export type PropsType = {
 
 export function Todolist(props: PropsType) {
 
+    const taskTitleInput = useRef<HTMLInputElement>(null)
+
     function addTask() {
-        props.addTask("New Task")
+        if(taskTitleInput.current) {
+            const newTaskTitle = taskTitleInput.current.value
+            props.addTask(newTaskTitle)
+            taskTitleInput.current.value = ""
+        }
     }
 
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input/>
+            <input ref={taskTitleInput}/>
             <button onClick={() => {addTask()}}>+</button>
         </div>
         <ul>
