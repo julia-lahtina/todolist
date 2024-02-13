@@ -1,13 +1,13 @@
 import React from 'react';
 import {FilterValuesType} from './App';
 
-type TaskType = {
+export type TaskType = {
     id: number
     title: string
     isDone: boolean
 }
 
-type PropsType = {
+export type PropsType = {
     title: string
     tasks: Array<TaskType>
     removeTask: (taskId: number) => void
