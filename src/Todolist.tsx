@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import {FilterValuesType} from './App';
 
 export type TaskType = {
@@ -25,11 +25,10 @@ export function Todolist(props: PropsType) {
     function addTask() {
         const trimmedTitle = taskTitle.trim()
         if (trimmedTitle) {
-            props.addTask(taskTitle)
+            props.addTask(trimmedTitle)
         } else {
             setTaskInputError(true)
         }
-
         setTaskTitle("")
     }
 
@@ -37,18 +36,24 @@ export function Todolist(props: PropsType) {
         setTaskTitle(e.currentTarget.value)
         e.currentTarget.value.length > 15 && setTaskInputError(true)
         if (taskInputError) {
-            e.currentTarget.value.length > 15 && setTaskInputError(false)
+            e.currentTarget.value.length <= 15 && setTaskInputError(false)
+        }
+    }
+
+    function onKeyDownAddTaskHandler(e: KeyboardEvent<HTMLInputElement>) {
+        if (!taskInputError) {
+            e.key === "Enter" && addTask()
         }
     }
 
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
-
     const taskTitleInputErrorClass = taskInputError ? "taskTitleInputError" : ""
 
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input className={taskTitleInputErrorClass} value={taskTitle} onChange={onChangeSetTitle}/>
+            <input className={taskTitleInputErrorClass} value={taskTitle} onChange={onChangeSetTitle}
+                   onKeyDown={onKeyDownAddTaskHandler}/>
             <button disabled={isAddTaskBtnDisabled} onClick={() => {
                 addTask()
             }}>+
