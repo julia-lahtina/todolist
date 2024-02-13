@@ -17,8 +17,7 @@ export type PropsType = {
 
 export function Todolist(props: PropsType) {
 
-    console.log("Todolist has been rendered")
-
+    const [isCollapsed, setIsCollapsed] = useState(false)
     const [taskTitle, setTaskTitle] = useState("")
     const [taskInputError, setTaskInputError] = useState(false)
 
@@ -49,46 +48,58 @@ export function Todolist(props: PropsType) {
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
     const taskTitleInputErrorClass = taskInputError ? "taskTitleInputError" : ""
 
-    return <div>
-        <h3>{props.title}</h3>
+    return (
         <div>
-            <input className={taskTitleInputErrorClass} value={taskTitle} onChange={onChangeSetTitle}
-                   onKeyDown={onKeyDownAddTaskHandler}/>
-            <button disabled={isAddTaskBtnDisabled} onClick={() => {
-                addTask()
-            }}>+
-            </button>
-            {taskInputError && <div style={{color: "red"}}>Enter correct title</div>}
-        </div>
-        <ul>
+            <h3>
+                {props.title}
+                <button onClick={() => setIsCollapsed(!isCollapsed)}>{isCollapsed ? "Open" : "Close"}</button>
+            </h3>
             {
-                props.tasks.map(t => <li key={t.id}>
-                    <input type="checkbox" checked={t.isDone}/>
-                    <span>{t.title}</span>
-                    <button onClick={() => {
-                        props.removeTask(t.id)
-                    }}>x
-                    </button>
-                </li>)
+                isCollapsed
+                    ? null
+                    :
+                    <>
+                        <div>
+                            <input className={taskTitleInputErrorClass} value={taskTitle} onChange={onChangeSetTitle}
+                                   onKeyDown={onKeyDownAddTaskHandler}/>
+                            <button disabled={isAddTaskBtnDisabled} onClick={() => {
+                                addTask()
+                            }}>+
+                            </button>
+                            {taskInputError && <div style={{color: "red"}}>Enter correct title</div>}
+                        </div>
+                        <ul>
+                            {
+                                props.tasks.map(t => <li key={t.id}>
+                                    <input type="checkbox" checked={t.isDone}/>
+                                    <span>{t.title}</span>
+                                    <button onClick={() => {
+                                        props.removeTask(t.id)
+                                    }}>x
+                                    </button>
+                                </li>)
+                            }
+                        </ul>
+                        <div>
+                            <button onClick={() => {
+                                props.changeFilter("all")
+                            }}>
+                                All
+                            </button>
+                            <button onClick={() => {
+                                props.changeFilter("active")
+                            }}>
+                                Active
+                            </button>
+                            <button onClick={() => {
+                                props.changeFilter("completed")
+                            }}>
+                                Completed
+                            </button>
+                        </div>
+                    </>
             }
-        </ul>
-        <div>
-            <button onClick={() => {
-                props.changeFilter("all")
-            }}>
-                All
-            </button>
-            <button onClick={() => {
-                props.changeFilter("active")
-            }}>
-                Active
-            </button>
-            <button onClick={() => {
-                props.changeFilter("completed")
-            }}>
-                Completed
-            </button>
-        </div>
-    </div>
+
+        </div>)
 
 }
