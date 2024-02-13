@@ -1,6 +1,5 @@
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {FilterValuesType} from './App';
-import {setEngine} from "node:crypto";
 
 export type TaskType = {
     id: string
@@ -24,21 +23,32 @@ export function Todolist(props: PropsType) {
     const [taskInputError, setTaskInputError] = useState(false)
 
     function addTask() {
-        props.addTask(taskTitle)
+        const trimmedTitle = taskTitle.trim()
+        if (trimmedTitle) {
+            props.addTask(taskTitle)
+        } else {
+            setTaskInputError(true)
+        }
+
         setTaskTitle("")
     }
+
     function onChangeSetTitle(e: ChangeEvent<HTMLInputElement>) {
         setTaskTitle(e.currentTarget.value)
         e.currentTarget.value.length > 15 && setTaskInputError(true)
+        if (taskInputError) {
+            e.currentTarget.value.length > 15 && setTaskInputError(false)
+        }
     }
 
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
 
+    const taskTitleInputErrorClass = taskInputError ? "taskTitleInputError" : ""
 
     return <div>
         <h3>{props.title}</h3>
         <div>
-            <input value={taskTitle} onChange={onChangeSetTitle}/>
+            <input className={taskTitleInputErrorClass} value={taskTitle} onChange={onChangeSetTitle}/>
             <button disabled={isAddTaskBtnDisabled} onClick={() => {
                 addTask()
             }}>+
