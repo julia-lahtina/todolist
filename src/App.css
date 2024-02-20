@@ -24,3 +24,11 @@
     background-color: blueviolet;
     color: white;
 }
+
+.tasks-counter {
+    font-weight: 100;
+    font-size: small;
+    background-color: blueviolet;
+    margin: 0 5px;
+    color: white;
+}
