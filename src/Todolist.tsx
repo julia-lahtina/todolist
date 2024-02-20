@@ -13,6 +13,7 @@ export type PropsType = {
     removeTask: (taskId: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (taskTitle: string) => void
+    changeTaskStatus: (id: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -30,7 +31,6 @@ export function Todolist(props: PropsType) {
         }
         setTaskTitle("")
     }
-
     function onChangeSetTitle(e: ChangeEvent<HTMLInputElement>) {
         setTaskTitle(e.currentTarget.value)
         e.currentTarget.value.length > 15 && setTaskInputError(true)
@@ -44,6 +44,7 @@ export function Todolist(props: PropsType) {
             e.key === "Enter" && addTask()
         }
     }
+
 
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
     const taskTitleInputErrorClass = taskInputError ? "taskTitleInputError" : ""
@@ -71,7 +72,11 @@ export function Todolist(props: PropsType) {
                         <ul>
                             {
                                 props.tasks.map(t => <li key={t.id}>
-                                    <input type="checkbox" checked={t.isDone}/>
+                                    <input
+                                        type="checkbox"
+                                        checked={t.isDone}
+                                        onChange={() => props.changeTaskStatus(t.id)}
+                                    />
                                     <span>{t.title}</span>
                                     <button onClick={() => {
                                         props.removeTask(t.id)
