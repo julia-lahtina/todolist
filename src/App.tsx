@@ -5,6 +5,18 @@ import {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
+export function getFilteredTasks(allTasks: Array<TaskType>, filterValue: FilterValuesType): Array<TaskType> { //последний :Array<TaskType> это то, что возвращает функция, т.е. типизация return
+    let tasksForTodolist = allTasks;
+    if (filterValue === 'active') {
+        tasksForTodolist = allTasks.filter(t => !t.isDone);
+    }
+    if (filterValue === 'completed') {
+        tasksForTodolist = allTasks.filter(t => t.isDone);
+    }
+    return tasksForTodolist
+}
+
+
 function App() {
     console.log(v1())
 
@@ -55,20 +67,22 @@ function App() {
 
 
     //UI
-    let tasksForTodolist = tasks;
 
-    if (filter === 'active') {
-        tasksForTodolist = tasks.filter(t => !t.isDone);
-    }
-    if (filter === 'completed') {
-        tasksForTodolist = tasks.filter(t => t.isDone);
-    }
+    /*    let tasksForTodolist = tasks;
+        if (filter === 'active') {
+            tasksForTodolist = tasks.filter(t => !t.isDone);
+        }
+        if (filter === 'completed') {
+            tasksForTodolist = tasks.filter(t => t.isDone);
+        }*/
 
+
+    const filteredTasks = getFilteredTasks(tasks, filter)
 
     return (
         <div className="App">
             <Todolist title="What to learn"
-                      tasks={tasksForTodolist}
+                      tasks={filteredTasks}
                       filter={filter}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
@@ -77,6 +91,7 @@ function App() {
             />
         </div>
     );
+
 }
 
 export default App;
