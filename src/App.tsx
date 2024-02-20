@@ -39,6 +39,7 @@ function App() {
         const task = tasks.find(t => t.id === id) //undefined если нет совпадений
         if (task) {
             task.isDone = !task.isDone  // меняем статус мутабельно
+            setTasks([...tasks])
         }
     }
 
