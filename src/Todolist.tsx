@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType, getFilteredTasks} from './App';
 
 export type TaskType = {
     id: string
@@ -20,7 +20,7 @@ export type PropsType = {
 export function Todolist(props: PropsType) {
 
     const [isCollapsed, setIsCollapsed] = useState(false)
-    const [taskTitle, setTaskTitle] = useState("")
+    const [taskTitle, setTaskTitle] = useState('')
     const [taskInputError, setTaskInputError] = useState(false)
 
     function addTask() {
@@ -30,8 +30,9 @@ export function Todolist(props: PropsType) {
         } else {
             setTaskInputError(true)
         }
-        setTaskTitle("")
+        setTaskTitle('')
     }
+
     function onChangeSetTitle(e: ChangeEvent<HTMLInputElement>) {
         setTaskTitle(e.currentTarget.value)
         e.currentTarget.value.length > 15 && setTaskInputError(true)
@@ -42,19 +43,24 @@ export function Todolist(props: PropsType) {
 
     function onKeyDownAddTaskHandler(e: KeyboardEvent<HTMLInputElement>) {
         if (!taskInputError) {
-            e.key === "Enter" && addTask()
+            e.key === 'Enter' && addTask()
         }
     }
 
 
     const isAddTaskBtnDisabled = taskTitle.length === 0 || taskTitle.length > 15
-    const taskTitleInputErrorClass = taskInputError ? "taskTitleInputError" : ""
+    const taskTitleInputErrorClass = taskInputError ? 'taskTitleInputError' : ''
+
+    const activeTasksCount = getFilteredTasks(props.tasks, 'active').length
+
 
     return (
         <div>
             <h3>
                 {props.title}
-                <button onClick={() => setIsCollapsed(!isCollapsed)}>{isCollapsed ? "Open" : "Close"}</button>
+                {isCollapsed && <span className={'tasks-counter'}>active: {activeTasksCount}</span>}
+
+                <button onClick={() => setIsCollapsed(!isCollapsed)}>{isCollapsed ? 'Open' : 'Close'}</button>
             </h3>
             {
                 isCollapsed
@@ -68,7 +74,7 @@ export function Todolist(props: PropsType) {
                                 addTask()
                             }}>+
                             </button>
-                            {taskInputError && <div style={{color: "red"}}>Enter correct title</div>}
+                            {taskInputError && <div style={{color: 'red'}}>Enter correct title</div>}
                         </div>
                         <ul>
                             {
@@ -78,7 +84,7 @@ export function Todolist(props: PropsType) {
                                         checked={t.isDone}
                                         onChange={(e) => props.changeTaskStatus(t.id, e.currentTarget.checked)}
                                     />
-                                    <span className={t.isDone ? 'taskDone task' :  'task'}>{t.title}</span>
+                                    <span className={t.isDone ? 'taskDone task' : 'task'}>{t.title}</span>
                                     <button onClick={() => {
                                         props.removeTask(t.id)
                                     }}>x
@@ -97,9 +103,10 @@ export function Todolist(props: PropsType) {
                             }}>
                                 Active
                             </button>
-                            <button className={props.filter === 'completed' ? 'filter-btn-active' : ' '} onClick={() => {
-                                props.changeFilter('completed')
-                            }}>
+                            <button className={props.filter === 'completed' ? 'filter-btn-active' : ' '}
+                                    onClick={() => {
+                                        props.changeFilter('completed')
+                                    }}>
                                 Completed
                             </button>
                         </div>
