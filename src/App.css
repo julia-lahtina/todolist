@@ -11,3 +11,16 @@
     border: 3px solid red;
     outline: none;
 }
+
+.task {
+    font-weight: bold;
+}
+
+.taskDone {
+    opacity: 0.5;
+}
+
+.filter-btn-active {
+    background-color: blueviolet;
+    color: white;
+}
