@@ -1,34 +1,26 @@
+
 .App {
-    padding: 30px;
-    display: flex;
+  padding: 30px;
+  display: flex;
 }
 
 .App > div {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
-.taskTitleInputError {
-    border: 3px solid red;
-    outline: none;
+.error {
+  border: red 1px solid;
 }
 
-.task {
-    font-weight: bold;
+.error-message {
+  color: red;
 }
 
-.taskDone {
-    opacity: 0.5;
+.active-filter {
+  background-color: aquamarine;
 }
 
-.filter-btn-active {
-    background-color: blueviolet;
-    color: white;
+.is-done {
+  opacity: 0.5;
 }
 
-.tasks-counter {
-    font-weight: 100;
-    font-size: small;
-    background-color: blueviolet;
-    margin: 0 5px;
-    color: white;
-}
