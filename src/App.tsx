@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from './Todolist';
+import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -9,6 +9,10 @@ type TodolistsType = {
     id: string
     title: string
     filter: FilterValuesType
+}
+
+type TasksType = {
+    [key: string]:TaskType[]
 }
 
 function App() {
@@ -21,7 +25,7 @@ function App() {
         {id: todolistID2, title: 'What to buy', filter: 'all'},
     ])
 
-    let [tasks, setTasks] = useState({
+    let [tasks, setTasks] = useState<TasksType>({
         [todolistID1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
@@ -61,7 +65,9 @@ function App() {
     }
 
     function removeTodolist(todolistId: string) {
-        setTodolists([...todolists].filter(el => el.id !== todolistId))
+        setTodolists(todolists.filter(el => el.id !== todolistId))
+        delete tasks[todolistId] //подчищаем за собой
+        console.log(tasks)
     }
 
 
@@ -69,19 +75,19 @@ function App() {
         <div className="App">
             {todolists.map(el => {
 
-                let tasksForTodolist = tasks[el.id];
+/*                let tasksForTodolist = tasks[el.id];
                 if (el.filter === 'active') {
                     tasksForTodolist = tasks[el.id].filter(t => !t.isDone);
                 }
                 if (el.filter === 'completed') {
                     tasksForTodolist = tasks[el.id].filter(t => t.isDone);
-                }
+                }*/
                 return (
                     <Todolist
                         key={el.id}
                         todolistID={el.id}
                         title={el.title}
-                        tasks={tasksForTodolist}
+                        tasks={tasks[el.id]}
                         removeTask={removeTask}
                         changeFilter={changeFilter}
                         addTask={addTask}
