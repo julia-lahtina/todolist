@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType, TodolistsType} from './App';
 
-type TaskType = {
+export type TaskType = {
     id: string
     title: string
     isDone: boolean
@@ -21,13 +21,13 @@ type PropsType = {
 
 export function Todolist(props: PropsType) {
 
-/*    let tasksForTodolist = tasks;
-    if (todolists[1].filter === 'active') {
-        tasksForTodolist = tasks.filter(t => !t.isDone);
+    let tasksForTodolist = props.tasks;
+    if (props.filter === 'active') {
+        tasksForTodolist = props.tasks.filter(t => !t.isDone);
     }
-    if (todolists[1].filter === 'completed') {
-        tasksForTodolist = tasks.filter(t => t.isDone);
-    }*/
+    if (props.filter === 'completed') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone);
+    }
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
@@ -52,6 +52,11 @@ export function Todolist(props: PropsType) {
         }
     }
 
+    const removeTodolistHandler = () => {
+        props.removeTodolist(props.todolistID)
+    }
+
+
     const onAllClickHandler = () => props.changeFilter(props.todolistID,"all");
     const onActiveClickHandler = () => props.changeFilter(props.todolistID, "active");
     const onCompletedClickHandler = () => props.changeFilter(props.todolistID, "completed");
@@ -60,7 +65,7 @@ export function Todolist(props: PropsType) {
     return <div>
         <h3>
             {props.title}
-            <button onClick={() => props.removeTodolist(props.todolistID)}>X</button>
+            <button onClick={removeTodolistHandler}>X</button>
         </h3>
 
         <div>
@@ -74,7 +79,7 @@ export function Todolist(props: PropsType) {
         </div>
         <ul>
             {
-                props.tasks.map(t => {
+                tasksForTodolist.map(t => {
                     const onClickHandler = () => props.removeTask(props.todolistID, t.id)
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeTaskStatus(props.todolistID, t.id, e.currentTarget.checked);
