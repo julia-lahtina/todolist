@@ -32,6 +32,13 @@ export const AddItemForm = (props: AddItemFormProps) => {
         }
     }
 
+    const buttonStyles = {
+        maxWidth: '30px',
+        maxHeight: '30px',
+        minWidth: '30px',
+        minHeight: '30px',
+    }
+
 
     return (
         <div>
@@ -41,11 +48,7 @@ export const AddItemForm = (props: AddItemFormProps) => {
                    className={error ? 'error' : ''}
             />
 
-            <Button
-                onClick={addTask}
-                variant="contained"
-                style={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px'}}
-            >+</Button>
+            <Button onClick={addTask} variant="contained" style={buttonStyles}>+</Button>
 
             {error && <div className="error-message">{error}</div>}
         </div>
