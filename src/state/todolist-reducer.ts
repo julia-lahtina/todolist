@@ -12,7 +12,7 @@ export const todolistsReducer = (state: TodolistType[], action: TodolistsReducer
             return [...state, newTodolist];
         }
 
-        default: return state
+        default: return state;
     }
 }
 
