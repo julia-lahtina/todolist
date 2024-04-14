@@ -32,42 +32,13 @@ export type TasksStateType = {
 
 
 function AppWithRedux() {
-    let todolistId1 = v1();
-    let todolistId2 = v1();
 
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
    // const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
 
-    function removeTask(id: string, todolistId: string) {
-        dispatch(removeTaskAC(id, todolistId));
-    }
 
-    function addTask(title: string, todolistId: string) {
-        dispatch(addTaskAC(title, todolistId))
-    }
-
-    function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        dispatch(changeTaskStatusAC(id, isDone, todolistId))
-    }
-
-    function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        dispatch(changeTaskTitleAC(id, newTitle, todolistId))
-    }
-
-    function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatch(ChangeTodolistFilterAC(todolistId, value))
-    }
-
-    function removeTodolist(id: string) {
-        let action = RemoveTodolistAC(id)
-        dispatch(action)
-    }
-
-    function changeTodolistTitle(id: string, title: string) {
-        dispatch(ChangeTodolistTitleAC(id, title))
-    }
 
     const addTodolist = useCallback((title: string) => {
         let action = AddTodolistAC(title)
